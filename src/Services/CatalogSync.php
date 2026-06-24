@@ -16,10 +16,16 @@ use Illuminate\Contracts\Config\Repository as Config;
  */
 class CatalogSync
 {
-    public function __construct(
-        private Client $client,
-        private Config $config,
-    ) {
+    /** @var Client */
+    private $client;
+
+    /** @var Config */
+    private $config;
+
+    public function __construct(Client $client, Config $config)
+    {
+        $this->client = $client;
+        $this->config = $config;
     }
 
     /**

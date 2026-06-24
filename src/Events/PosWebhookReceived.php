@@ -10,21 +10,25 @@ namespace Biteslote\Connector\Events;
  */
 class PosWebhookReceived
 {
-    /**
-     * @param string $type    the event name, e.g. "order.status_changed"
-     * @param array  $payload the event data block
-     */
-    public function __construct(
-        public string $type,
-        public array $payload,
-    ) {
+    /** @var string the event name, e.g. "order.status_changed" */
+    public $type;
+
+    /** @var array the event data block */
+    public $payload;
+
+    public function __construct(string $type, array $payload)
+    {
+        $this->type = $type;
+        $this->payload = $payload;
     }
 
     public function orderId(): ?int
     {
-        return isset($this->payload['order_id'])
-            ? (int) $this->payload['order_id']
-            : (isset($this->payload['id']) ? (int) $this->payload['id'] : null);
+        if (isset($this->payload['order_id'])) {
+            return (int) $this->payload['order_id'];
+        }
+
+        return isset($this->payload['id']) ? (int) $this->payload['id'] : null;
     }
 
     public function status(): ?string

@@ -16,12 +16,24 @@ use Illuminate\Contracts\Events\Dispatcher;
  */
 class OrderForwarder
 {
-    public function __construct(
-        private Client $client,
-        private ProductMapper $mapper,
-        private Config $config,
-        private Dispatcher $events,
-    ) {
+    /** @var Client */
+    private $client;
+
+    /** @var ProductMapper */
+    private $mapper;
+
+    /** @var Config */
+    private $config;
+
+    /** @var Dispatcher */
+    private $events;
+
+    public function __construct(Client $client, ProductMapper $mapper, Config $config, Dispatcher $events)
+    {
+        $this->client = $client;
+        $this->mapper = $mapper;
+        $this->config = $config;
+        $this->events = $events;
     }
 
     /**

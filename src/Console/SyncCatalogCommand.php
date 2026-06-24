@@ -32,6 +32,6 @@ class SyncCatalogCommand extends Command
             $this->warn("{$pending} storefront product(s) still need a POS mapping.");
         }
 
-        return self::SUCCESS;
+        return 0;
     }
 }

@@ -11,14 +11,19 @@ namespace Biteslote\Connector\Events;
  */
 class OrderForwarded
 {
+    /** @var array the POS order payload (id, order_number, status, total, ...) */
+    public $posOrder;
+
+    /** @var int|string|null your local order reference, if supplied */
+    public $reference;
+
     /**
-     * @param array            $posOrder  the POS order payload (id, order_number, status, total, ...)
-     * @param int|string|null  $reference your local order reference, if supplied
+     * @param int|string|null $reference
      */
-    public function __construct(
-        public array $posOrder,
-        public int|string|null $reference = null,
-    ) {
+    public function __construct(array $posOrder, $reference = null)
+    {
+        $this->posOrder = $posOrder;
+        $this->reference = $reference;
     }
 
     public function posOrderId(): ?int

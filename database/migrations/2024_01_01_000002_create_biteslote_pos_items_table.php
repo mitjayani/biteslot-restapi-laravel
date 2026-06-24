@@ -9,8 +9,10 @@ use Illuminate\Support\Facades\Schema;
  *
  * Powers a mapping UI (pick the POS item for each storefront product) and the
  * SKU auto-match step. This is a cache: it is safe to truncate and re-sync.
+ *
+ * Named (not anonymous) class for compatibility with Laravel 7's migrator.
  */
-return new class extends Migration
+class CreateBiteslotePosItemsTable extends Migration
 {
     public function up(): void
     {
@@ -36,4 +38,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('biteslote_pos_items');
     }
-};
+}

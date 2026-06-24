@@ -20,8 +20,8 @@ You will:
 
 | Requirement | Minimum |
 |-------------|---------|
-| PHP | 8.0+ |
-| Laravel | 9, 10, 11 or 12 |
+| PHP | 7.4+ |
+| Laravel | 7, 8, 9, 10, 11 or 12 |
 | Composer | 2.x |
 | PHP extensions | `curl`, `json` |
 | From biteslote | API base URL + API key (`rk_live_…`), issued on your **API & Integrations** page |
@@ -144,8 +144,8 @@ screen, or do it in tinker):
 ```php
 use Biteslote\Connector\Models\ProductMap;
 
-// your product 482  ->  POS menu item 1071
-ProductMap::link(482, 1071, branchId: null, extra: [
+// your product 482  ->  POS menu item 1071 (branchId, extra)
+ProductMap::link(482, 1071, null, [
     'local_sku' => 'BURGER-CL',
     'pos_name'  => 'Classic Burger',
 ]);

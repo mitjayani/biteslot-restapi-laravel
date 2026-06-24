@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\Schema;
  * Storefront product IDs/names never match POS menu_item IDs, so every web
  * order line is translated through this table before being forwarded. One row
  * per local product.
+ *
+ * Named (not anonymous) class for compatibility with Laravel 7's migrator.
  */
-return new class extends Migration
+class CreateBitesloteProductMapTable extends Migration
 {
     public function up(): void
     {
@@ -43,4 +45,4 @@ return new class extends Migration
     {
         Schema::dropIfExists('biteslote_product_map');
     }
-};
+}
