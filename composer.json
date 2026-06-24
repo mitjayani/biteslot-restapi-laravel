@@ -35,7 +35,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/mitjayani/restapi-sdk.git"
+            "url": "https://github.com/mitjayani/biteslot-restapi-sdk.git"
         }
     ],
     "config": {
