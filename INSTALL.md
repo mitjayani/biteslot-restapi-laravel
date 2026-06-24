@@ -39,8 +39,8 @@ The connector is a private package, so add its repositories to your project's
 ```jsonc
 // composer.json
 "repositories": [
-    { "type": "vcs", "url": "https://github.com/biteslote/restapi-laravel.git" },
-    { "type": "vcs", "url": "https://github.com/biteslote/restapi-sdk.git" }
+    { "type": "vcs", "url": "https://github.com/mitjayani/biteslot-restapi-laravel.git" },
+    { "type": "vcs", "url": "https://github.com/mitjayani/biteslot-restapi-sdk.git" }
 ],
 ```
 
