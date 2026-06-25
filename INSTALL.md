@@ -110,41 +110,50 @@ php artisan migrate
 ## 4. Map your products to the POS menu
 
 **This is the important step.** Your product IDs/names are different from the POS,
-so each product must be linked to a POS menu item once.
+so each product must be linked to a POS menu item once. The package ships a guided
+wizard for exactly this — you don't have to build anything.
 
-### 4a. Pull the POS menu and auto-link by SKU
+### 4a. Use the setup wizard (recommended)
+
+Open this URL in your browser (logged in as an admin):
+
+```
+https://your-site.com/biteslot/setup
+```
+
+You'll be walked through three steps:
+
+1. **Select the table that contains your products** and map its columns
+   (id / sku / name / price). The wizard reads your own database directly.
+2. **Sync the POS menu** — pulls every BiteSlot product in and auto-links any
+   product whose **SKU** matches.
+3. **Map each product** to its POS item, with search and an "auto-match by SKU"
+   button. A live counter shows how many are still unmapped.
+
+> **Lock it down first.** The wizard ships behind `['web']` middleware only.
+> Before exposing it, add auth in `config/biteslot-connector.php`:
+> ```php
+> 'wizard' => ['middleware' => ['web', 'auth', 'can:manage-biteslot']],
+> ```
+> To turn it off entirely and map via CLI/code only:
+> `'wizard' => ['enabled' => false]`.
+
+If your products live on a **different database connection**, point the wizard at
+it with `BITESLOT_SOURCE_CONNECTION=that_connection` in `.env`.
+
+### 4b. Prefer the command line / code
 
 ```bash
-php artisan biteslot:sync-catalog
+php artisan biteslot:sync-catalog      # pull POS menu + auto-map by SKU
+php artisan biteslot:import-products   # re-import products from the table chosen in the wizard
 ```
 
-This downloads the POS menu into `biteslot_pos_items` and automatically links any
-of your products whose **SKU** matches a POS item. The command prints how many are
-still unmapped.
-
-For SKU auto-mapping to work, seed your products into the map table first (id + sku):
+Or map explicitly:
 
 ```php
 use Biteslot\Connector\Models\ProductMap;
 
-foreach (Product::all() as $p) {
-    ProductMap::firstOrCreate(
-        ['local_product_id' => $p->id],
-        ['local_sku' => $p->sku]
-    );
-}
-// then run: php artisan biteslot:sync-catalog
-```
-
-### 4b. Map the rest manually
-
-For products without a matching SKU, link them explicitly (build a small admin
-screen, or do it in tinker):
-
-```php
-use Biteslot\Connector\Models\ProductMap;
-
-// your product 482  ->  POS menu item 1071 (branchId, extra)
+// your product 482  ->  POS menu item 1071
 ProductMap::link(482, 1071, null, [
     'local_sku' => 'BURGER-CL',
     'pos_name'  => 'Classic Burger',
@@ -272,10 +281,13 @@ values (step 2).
 | Setting | Where |
 |---------|-------|
 | API URL / key / timeout | `config/biteslot-restapi.php` (env: `BITESLOT_API_URL`, `BITESLOT_API_KEY`, `BITESLOT_API_TIMEOUT`) |
-| Branch / order type / webhook | `config/biteslot-connector.php` |
+| Branch / order type / webhook / wizard / source | `config/biteslot-connector.php` |
+| Setup wizard | `GET /biteslot/setup` (prefix/middleware/enabled under `wizard`) |
+| Product source table/columns | `biteslot_source_settings` (model `Biteslot\Connector\Models\SourceSetting`) |
 | Product mapping table | `biteslot_product_map` (model `Biteslot\Connector\Models\ProductMap`) |
 | POS menu cache | `biteslot_pos_items` (model `Biteslot\Connector\Models\PosItem`) |
 | Sync command | `php artisan biteslot:sync-catalog` |
+| Import products command | `php artisan biteslot:import-products` |
 | Forward an order | `app(\Biteslot\Connector\Services\OrderForwarder::class)->forward([...])` |
 | Webhook event | `Biteslot\Connector\Events\PosWebhookReceived` |
 | Webhook URL | `POST /biteslot/webhook` |

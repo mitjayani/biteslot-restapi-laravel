@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property string      $local_product_id
  * @property string|null $local_sku
+ * @property string|null $local_name
+ * @property float|null  $local_price
+ * @property string|null $local_category
  * @property int|null    $pos_item_id
  * @property int|null    $pos_branch_id
  * @property string|null $pos_name
@@ -21,6 +24,7 @@ class ProductMap extends Model
     protected $guarded = [];
 
     protected $casts = [
+        'local_price' => 'float',
         'pos_item_id' => 'integer',
         'pos_branch_id' => 'integer',
         'pos_price' => 'float',

@@ -14,9 +14,11 @@ Website order ──> ProductMapper (biteslot_product_map) ──> POS /v1/order
 
 ## What you get
 
+- **Setup wizard** (`/biteslot/setup`) — a built-in, guided UI that maps your
+  products to the POS in three steps, on any platform. No website code required.
 - **`biteslot_product_map`** — the authoritative local-product → POS-item link.
-- **`biteslot_pos_items`** — a synced snapshot of the POS catalog for building a
-  mapping UI and matching by SKU.
+- **`biteslot_pos_items`** — a synced snapshot of the POS catalog for the mapping
+  UI and matching by SKU.
 - **`ProductMapper`** — translates a cart to POS line items, or throws
   `UnmappedProductsException` listing exactly which products aren't mapped.
 - **`OrderForwarder`** — maps + forwards a cart to the POS, idempotently.
@@ -24,6 +26,32 @@ Website order ──> ProductMapper (biteslot_product_map) ──> POS /v1/order
   auto-map by SKU.
 - **Webhook receiver** — verified inbound POS webhooks re-dispatched as the
   `PosWebhookReceived` event so you can sync status back to your order.
+
+## The setup wizard
+
+Mapping is configured **once during integration setup**, not on every order, so
+only deliberately mapped products are ever accepted. After install, an admin
+visits **`/biteslot/setup`** and is guided through:
+
+1. **Select the table that contains your products** — the wizard reads your own
+   database (any table), and you map its columns (id / sku / name / price).
+2. **Sync the POS menu** — pulls every BiteSlot product into a local cache;
+   anything with a matching SKU is linked automatically.
+3. **Map each product** — pick the matching POS item for each storefront product.
+
+Then orders forward by **mapped POS item id**, so different product names on the
+two sides never cause a wrong item.
+
+> **Protect the route.** The wizard ships behind `['web']` middleware only. Add
+> your own auth in `config/biteslot-connector.php`:
+> ```php
+> 'wizard' => ['middleware' => ['web', 'auth', 'can:manage-biteslot']],
+> ```
+> Disable it entirely with `'wizard' => ['enabled' => false]` and map via CLI.
+
+Prefer scripts? `php artisan biteslot:import-products` re-imports from the table
+you chose in the wizard; `php artisan biteslot:sync-catalog` refreshes the POS
+menu and auto-maps by SKU.
 
 ## Install
 
@@ -47,15 +75,10 @@ BITESLOT_WEBHOOK_SECRET=whsec_...  # the endpoint secret you set on the POS
 
 ## 1. Map your products
 
-Sync the POS catalog and let SKU matches link themselves:
+Open **`/biteslot/setup`** in a browser and follow the three steps above. That's
+the whole job — pick your product table, sync the POS menu, map each product.
 
-```bash
-php artisan biteslot:sync-catalog
-```
-
-Seed your storefront products (id + sku) into `biteslot_product_map` and run the
-command — anything with a matching SKU is linked automatically. Map the rest in
-your own admin screen:
+To do it (or re-do it) from code instead of the UI:
 
 ```php
 use Biteslot\Connector\Models\ProductMap;

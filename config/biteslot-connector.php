@@ -31,6 +31,34 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Product source (read by the setup wizard)
+    |--------------------------------------------------------------------------
+    | The DB connection whose tables the wizard lists when the merchant picks
+    | "the table that contains their products". Null = the app's default
+    | connection. The chosen table + column mapping itself is stored in
+    | biteslot_source_settings, not here.
+    */
+    'source' => [
+        'connection' => env('BITESLOT_SOURCE_CONNECTION'),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Setup wizard
+    |--------------------------------------------------------------------------
+    | The guided product-mapping UI. IMPORTANT: add your own auth/authorization
+    | middleware so only an admin can reach it, e.g.
+    |   'middleware' => ['web', 'auth', 'can:manage-biteslot'],
+    | Set 'enabled' => false to remove the routes entirely (map via CLI instead).
+    */
+    'wizard' => [
+        'enabled' => env('BITESLOT_WIZARD_ENABLED', true),
+        'prefix' => env('BITESLOT_WIZARD_PREFIX', 'biteslot/setup'),
+        'middleware' => ['web'],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Inbound webhooks (POS -> this site)
     |--------------------------------------------------------------------------
     | The POS posts order.created / order.status_changed here. `secret` is the
