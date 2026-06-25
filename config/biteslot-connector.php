@@ -22,6 +22,16 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Order source label
+    |--------------------------------------------------------------------------
+    | Sent as `source` with every forwarded order and shown on the POS order /
+    | kitchen ticket (e.g. "[Website #5036]") so staff know where it came from.
+    | Defaults to your app name.
+    */
+    'order_source' => env('BITESLOT_ORDER_SOURCE', env('APP_NAME', 'Website')),
+
+    /*
+    |--------------------------------------------------------------------------
     | Catalog sync
     |--------------------------------------------------------------------------
     */

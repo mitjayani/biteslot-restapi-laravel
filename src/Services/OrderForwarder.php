@@ -58,6 +58,10 @@ class OrderForwarder
             'order_type' => $cart['order_type'] ?? $this->config->get('biteslot-connector.default_order_type'),
             'branch_id' => $this->config->get('biteslot-connector.default_branch_id'),
             'note' => $cart['note'] ?? null,
+            // The storefront's own order number + platform label, shown on the POS
+            // order and kitchen ticket so staff can trace it back to the website.
+            'external_reference' => $cart['external_reference'] ?? ($reference !== null ? (string) $reference : null),
+            'source' => $cart['source'] ?? $this->config->get('biteslot-connector.order_source'),
             'items' => $this->mapper->resolve($cart['items'] ?? []),
             'customer' => $cart['customer'] ?? null,
         ], static fn ($v) => $v !== null && $v !== []);
