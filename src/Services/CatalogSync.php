@@ -1,16 +1,16 @@
 <?php
 
-namespace Biteslote\Connector\Services;
+namespace Biteslot\Connector\Services;
 
-use Biteslote\Connector\Models\PosItem;
-use Biteslote\Connector\Models\ProductMap;
-use Biteslote\RestApi\Client;
+use Biteslot\Connector\Models\PosItem;
+use Biteslot\Connector\Models\ProductMap;
+use Biteslot\RestApi\Client;
 use Illuminate\Contracts\Config\Repository as Config;
 
 /**
  * Pulls the POS catalog into a local cache and helps link products to it.
  *
- * `pull()` refreshes biteslote_pos_items (paginated). `autoMapBySku()` then links
+ * `pull()` refreshes biteslot_pos_items (paginated). `autoMapBySku()` then links
  * any storefront product whose SKU matches a POS item — the cheap win before a
  * human maps the remainder in the UI.
  */
@@ -33,8 +33,8 @@ class CatalogSync
      */
     public function pull(?int $branchId = null): int
     {
-        $branchId = $branchId ?? $this->normalizeBranch($this->config->get('biteslote-connector.default_branch_id'));
-        $perPage = (int) $this->config->get('biteslote-connector.sync.per_page', 100);
+        $branchId = $branchId ?? $this->normalizeBranch($this->config->get('biteslot-connector.default_branch_id'));
+        $perPage = (int) $this->config->get('biteslot-connector.sync.per_page', 100);
         $now = now();
         $count = 0;
         $page = 1;

@@ -5,18 +5,18 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * A local snapshot of the POS catalog, refreshed by `biteslote:sync-catalog`.
+ * A local snapshot of the POS catalog, refreshed by `biteslot:sync-catalog`.
  *
  * Powers a mapping UI (pick the POS item for each storefront product) and the
  * SKU auto-match step. This is a cache: it is safe to truncate and re-sync.
  *
  * Named (not anonymous) class for compatibility with Laravel 7's migrator.
  */
-class CreateBiteslotePosItemsTable extends Migration
+class CreateBiteslotPosItemsTable extends Migration
 {
     public function up(): void
     {
-        Schema::create('biteslote_pos_items', function (Blueprint $table) {
+        Schema::create('biteslot_pos_items', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('pos_item_id');
             $table->unsignedBigInteger('branch_id')->nullable();
@@ -36,6 +36,6 @@ class CreateBiteslotePosItemsTable extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('biteslote_pos_items');
+        Schema::dropIfExists('biteslot_pos_items');
     }
 }

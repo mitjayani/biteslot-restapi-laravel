@@ -1,12 +1,12 @@
 {
-    "name": "biteslote/restapi-laravel",
-    "description": "Laravel integration for the biteslote POS connector. Maps your storefront products to POS menu items, forwards web orders to the POS, and receives status webhooks. Built on biteslote/restapi-sdk.",
+    "name": "biteslot/restapi-laravel",
+    "description": "Laravel integration for the biteslot POS connector. Maps your storefront products to POS menu items, forwards web orders to the POS, and receives status webhooks. Built on biteslot/restapi-sdk.",
     "type": "library",
     "license": "proprietary",
-    "homepage": "https://biteslote.com",
+    "homepage": "https://biteslot.com",
     "require": {
         "php": ">=7.4",
-        "biteslote/restapi-sdk": "^1.0",
+        "biteslot/restapi-sdk": "^1.0",
         "illuminate/support": "^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
         "illuminate/database": "^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0",
         "illuminate/http": "^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0 || ^12.0"
@@ -17,18 +17,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Biteslote\\Connector\\": "src/"
+            "Biteslot\\Connector\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Biteslote\\Connector\\Tests\\": "tests/"
+            "Biteslot\\Connector\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Biteslote\\Connector\\ConnectorServiceProvider"
+                "Biteslot\\Connector\\ConnectorServiceProvider"
             ]
         }
     },

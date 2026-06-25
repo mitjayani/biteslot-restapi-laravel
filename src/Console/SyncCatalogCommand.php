@@ -1,14 +1,14 @@
 <?php
 
-namespace Biteslote\Connector\Console;
+namespace Biteslot\Connector\Console;
 
-use Biteslote\Connector\Models\ProductMap;
-use Biteslote\Connector\Services\CatalogSync;
+use Biteslot\Connector\Models\ProductMap;
+use Biteslot\Connector\Services\CatalogSync;
 use Illuminate\Console\Command;
 
 class SyncCatalogCommand extends Command
 {
-    protected $signature = 'biteslote:sync-catalog
+    protected $signature = 'biteslot:sync-catalog
         {--branch= : POS branch id to sync (defaults to config/key branch)}
         {--no-automap : Skip SKU auto-mapping after the pull}';
 

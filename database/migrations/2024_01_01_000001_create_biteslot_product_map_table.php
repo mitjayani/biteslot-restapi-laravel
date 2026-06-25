@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Schema;
  *
  * Named (not anonymous) class for compatibility with Laravel 7's migrator.
  */
-class CreateBitesloteProductMapTable extends Migration
+class CreateBiteslotProductMapTable extends Migration
 {
     public function up(): void
     {
-        Schema::create('biteslote_product_map', function (Blueprint $table) {
+        Schema::create('biteslot_product_map', function (Blueprint $table) {
             $table->id();
 
             // The storefront's own product identifier (int or uuid -> stored as string).
@@ -43,6 +43,6 @@ class CreateBitesloteProductMapTable extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('biteslote_product_map');
+        Schema::dropIfExists('biteslot_product_map');
     }
 }

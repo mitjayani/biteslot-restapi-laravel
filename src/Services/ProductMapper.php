@@ -1,15 +1,15 @@
 <?php
 
-namespace Biteslote\Connector\Services;
+namespace Biteslot\Connector\Services;
 
-use Biteslote\Connector\Exceptions\UnmappedProductsException;
-use Biteslote\Connector\Models\ProductMap;
+use Biteslot\Connector\Exceptions\UnmappedProductsException;
+use Biteslot\Connector\Models\ProductMap;
 
 /**
  * Translates storefront cart lines into POS order lines.
  *
  * The POS /v1/orders endpoint only accepts its own menu_item ids and rejects
- * anything else, so every line must be resolved through biteslote_product_map
+ * anything else, so every line must be resolved through biteslot_product_map
  * first. Unmapped products are collected and reported together, never guessed.
  */
 class ProductMapper

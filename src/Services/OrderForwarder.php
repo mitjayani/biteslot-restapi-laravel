@@ -1,9 +1,9 @@
 <?php
 
-namespace Biteslote\Connector\Services;
+namespace Biteslot\Connector\Services;
 
-use Biteslote\Connector\Events\OrderForwarded;
-use Biteslote\RestApi\Client;
+use Biteslot\Connector\Events\OrderForwarded;
+use Biteslot\RestApi\Client;
 use Illuminate\Contracts\Config\Repository as Config;
 use Illuminate\Contracts\Events\Dispatcher;
 
@@ -47,16 +47,16 @@ class OrderForwarder
      *
      * @return array the POS order payload
      *
-     * @throws \Biteslote\Connector\Exceptions\UnmappedProductsException
-     * @throws \Biteslote\RestApi\Exceptions\ApiException
+     * @throws \Biteslot\Connector\Exceptions\UnmappedProductsException
+     * @throws \Biteslot\RestApi\Exceptions\ApiException
      */
     public function forward(array $cart, ?string $idempotencyKey = null): array
     {
         $reference = $cart['reference'] ?? null;
 
         $payload = array_filter([
-            'order_type' => $cart['order_type'] ?? $this->config->get('biteslote-connector.default_order_type'),
-            'branch_id' => $this->config->get('biteslote-connector.default_branch_id'),
+            'order_type' => $cart['order_type'] ?? $this->config->get('biteslot-connector.default_order_type'),
+            'branch_id' => $this->config->get('biteslot-connector.default_branch_id'),
             'note' => $cart['note'] ?? null,
             'items' => $this->mapper->resolve($cart['items'] ?? []),
             'customer' => $cart['customer'] ?? null,

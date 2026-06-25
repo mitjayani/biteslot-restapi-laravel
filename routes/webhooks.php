@@ -1,14 +1,14 @@
 <?php
 
-use Biteslote\Connector\Http\Controllers\WebhookController;
-use Biteslote\Connector\Http\Middleware\VerifyWebhookSignature;
+use Biteslot\Connector\Http\Controllers\WebhookController;
+use Biteslot\Connector\Http\Middleware\VerifyWebhookSignature;
 use Illuminate\Support\Facades\Route;
 
-$config = config('biteslote-connector.webhook', []);
+$config = config('biteslot-connector.webhook', []);
 
-Route::post($config['route'] ?? 'biteslote/webhook', WebhookController::class)
+Route::post($config['route'] ?? 'biteslot/webhook', WebhookController::class)
     ->middleware(array_merge(
         (array) ($config['middleware'] ?? ['api']),
         [VerifyWebhookSignature::class]
     ))
-    ->name('biteslote.webhook');
+    ->name('biteslot.webhook');

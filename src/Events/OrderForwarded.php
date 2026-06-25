@@ -1,6 +1,6 @@
 <?php
 
-namespace Biteslote\Connector\Events;
+namespace Biteslot\Connector\Events;
 
 /**
  * Fired after a storefront cart has been accepted by the POS.

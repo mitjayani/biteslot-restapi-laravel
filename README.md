@@ -1,26 +1,26 @@
-# biteslote Laravel Connector
+# biteslot Laravel Connector
 
-Laravel integration for the **biteslote POS connector API**. It solves the core
+Laravel integration for the **biteslot POS connector API**. It solves the core
 problem of any storefront ↔ POS link: **your website's product IDs and names
 never match the POS menu-item IDs.** Orders are translated through a mapping
 table before they reach the POS, so the right items always hit the kitchen.
 
-Built on top of [`biteslote/restapi-sdk`](../php).
+Built on top of [`biteslot/restapi-sdk`](../php).
 
 ```
-Website order ──> ProductMapper (biteslote_product_map) ──> POS /v1/orders
+Website order ──> ProductMapper (biteslot_product_map) ──> POS /v1/orders
    (local id 482)         local 482 → pos_item 1071            { items:[{id:1071,...}] }
 ```
 
 ## What you get
 
-- **`biteslote_product_map`** — the authoritative local-product → POS-item link.
-- **`biteslote_pos_items`** — a synced snapshot of the POS catalog for building a
+- **`biteslot_product_map`** — the authoritative local-product → POS-item link.
+- **`biteslot_pos_items`** — a synced snapshot of the POS catalog for building a
   mapping UI and matching by SKU.
 - **`ProductMapper`** — translates a cart to POS line items, or throws
   `UnmappedProductsException` listing exactly which products aren't mapped.
 - **`OrderForwarder`** — maps + forwards a cart to the POS, idempotently.
-- **`CatalogSync`** + `php artisan biteslote:sync-catalog` — pull the catalog and
+- **`CatalogSync`** + `php artisan biteslot:sync-catalog` — pull the catalog and
   auto-map by SKU.
 - **Webhook receiver** — verified inbound POS webhooks re-dispatched as the
   `PosWebhookReceived` event so you can sync status back to your order.
@@ -28,21 +28,21 @@ Website order ──> ProductMapper (biteslote_product_map) ──> POS /v1/orde
 ## Install
 
 ```bash
-composer require biteslote/restapi-laravel
-php artisan vendor:publish --tag=biteslote-connector-config
+composer require biteslot/restapi-laravel
+php artisan vendor:publish --tag=biteslot-connector-config
 php artisan migrate
 ```
 
-Credentials live in the SDK config (`config/biteslote-restapi.php`):
+Credentials live in the SDK config (`config/biteslot-restapi.php`):
 
 ```env
-BITESLOTE_API_URL=https://shop.example.com/api/application-integration/v1
-BITESLOTE_API_KEY=rk_live_xxxxxxxx
+BITESLOT_API_URL=https://shop.example.com/api/application-integration/v1
+BITESLOT_API_KEY=rk_live_xxxxxxxx
 
 # this package
-BITESLOTE_BRANCH_ID=12              # optional; the key usually already scopes a branch
-BITESLOTE_ORDER_TYPE=delivery
-BITESLOTE_WEBHOOK_SECRET=whsec_...  # the endpoint secret you set on the POS
+BITESLOT_BRANCH_ID=12              # optional; the key usually already scopes a branch
+BITESLOT_ORDER_TYPE=delivery
+BITESLOT_WEBHOOK_SECRET=whsec_...  # the endpoint secret you set on the POS
 ```
 
 ## 1. Map your products
@@ -50,15 +50,15 @@ BITESLOTE_WEBHOOK_SECRET=whsec_...  # the endpoint secret you set on the POS
 Sync the POS catalog and let SKU matches link themselves:
 
 ```bash
-php artisan biteslote:sync-catalog
+php artisan biteslot:sync-catalog
 ```
 
-Seed your storefront products (id + sku) into `biteslote_product_map` and run the
+Seed your storefront products (id + sku) into `biteslot_product_map` and run the
 command — anything with a matching SKU is linked automatically. Map the rest in
 your own admin screen:
 
 ```php
-use Biteslote\Connector\Models\ProductMap;
+use Biteslot\Connector\Models\ProductMap;
 
 ProductMap::link($localProduct->id, $posItemId, $branchId, [
     'local_sku' => $localProduct->sku,
@@ -69,8 +69,8 @@ ProductMap::link($localProduct->id, $posItemId, $branchId, [
 ## 2. Forward an order
 
 ```php
-use Biteslote\Connector\Services\OrderForwarder;
-use Biteslote\Connector\Exceptions\UnmappedProductsException;
+use Biteslot\Connector\Services\OrderForwarder;
+use Biteslot\Connector\Exceptions\UnmappedProductsException;
 
 try {
     $posOrder = app(OrderForwarder::class)->forward([
@@ -101,11 +101,11 @@ double-submit never creates two orders.
 ## 3. Sync status back
 
 Register the webhook endpoint on the POS (API & Integrations → Webhooks) pointing
-to `https://your-site.com/biteslote/webhook` with events `order.created`,
+to `https://your-site.com/biteslot/webhook` with events `order.created`,
 `order.status_changed`, then listen:
 
 ```php
-use Biteslote\Connector\Events\PosWebhookReceived;
+use Biteslot\Connector\Events\PosWebhookReceived;
 
 Event::listen(function (PosWebhookReceived $e) {
     if ($e->type === 'order.status_changed') {

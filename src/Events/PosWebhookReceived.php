@@ -1,6 +1,6 @@
 <?php
 
-namespace Biteslote\Connector\Events;
+namespace Biteslot\Connector\Events;
 
 /**
  * Fired for every verified inbound POS webhook (order.created, order.status_changed, …).

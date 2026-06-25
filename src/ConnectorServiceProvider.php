@@ -1,27 +1,27 @@
 <?php
 
-namespace Biteslote\Connector;
+namespace Biteslot\Connector;
 
-use Biteslote\Connector\Console\SyncCatalogCommand;
-use Biteslote\Connector\Services\CatalogSync;
-use Biteslote\Connector\Services\OrderForwarder;
-use Biteslote\Connector\Services\ProductMapper;
-use Biteslote\RestApi\Client;
+use Biteslot\Connector\Console\SyncCatalogCommand;
+use Biteslot\Connector\Services\CatalogSync;
+use Biteslot\Connector\Services\OrderForwarder;
+use Biteslot\Connector\Services\ProductMapper;
+use Biteslot\RestApi\Client;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Wires the biteslote Laravel connector: config, migrations, the mapping/forwarding
+ * Wires the biteslot Laravel connector: config, migrations, the mapping/forwarding
  * services, the webhook route, and the catalog-sync command.
  *
- * The API client itself is provided by biteslote/restapi-sdk's auto-discovered
- * provider (config/biteslote-restapi.php holds base_url + api_key). This package
+ * The API client itself is provided by biteslot/restapi-sdk's auto-discovered
+ * provider (config/biteslot-restapi.php holds base_url + api_key). This package
  * only resolves that Client; it does not re-declare credentials.
  */
 class ConnectorServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/biteslote-connector.php', 'biteslote-connector');
+        $this->mergeConfigFrom(__DIR__ . '/../config/biteslot-connector.php', 'biteslot-connector');
 
         $this->app->singleton(ProductMapper::class);
 
@@ -42,18 +42,18 @@ class ConnectorServiceProvider extends ServiceProvider
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        if (($this->app['config']['biteslote-connector.webhook.enabled'] ?? true)) {
+        if (($this->app['config']['biteslot-connector.webhook.enabled'] ?? true)) {
             $this->loadRoutesFrom(__DIR__ . '/../routes/webhooks.php');
         }
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/biteslote-connector.php' => $this->app->configPath('biteslote-connector.php'),
-            ], 'biteslote-connector-config');
+                __DIR__ . '/../config/biteslot-connector.php' => $this->app->configPath('biteslot-connector.php'),
+            ], 'biteslot-connector-config');
 
             $this->publishes([
                 __DIR__ . '/../database/migrations' => $this->app->databasePath('migrations'),
-            ], 'biteslote-connector-migrations');
+            ], 'biteslot-connector-migrations');
 
             $this->commands([SyncCatalogCommand::class]);
         }

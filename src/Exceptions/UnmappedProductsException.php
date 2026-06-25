@@ -1,6 +1,6 @@
 <?php
 
-namespace Biteslote\Connector\Exceptions;
+namespace Biteslot\Connector\Exceptions;
 
 use RuntimeException;
 

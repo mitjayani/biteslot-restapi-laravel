@@ -1,11 +1,11 @@
 <?php
 
-namespace Biteslote\Connector\Models;
+namespace Biteslot\Connector\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Cached snapshot of a POS menu item (see biteslote:sync-catalog).
+ * Cached snapshot of a POS menu item (see biteslot:sync-catalog).
  *
  * @property int         $pos_item_id
  * @property int|null    $branch_id
@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class PosItem extends Model
 {
-    protected $table = 'biteslote_pos_items';
+    protected $table = 'biteslot_pos_items';
 
     protected $guarded = [];
 

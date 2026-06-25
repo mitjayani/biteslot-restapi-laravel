@@ -1,8 +1,8 @@
 <?php
 
-namespace Biteslote\Connector\Http\Controllers;
+namespace Biteslot\Connector\Http\Controllers;
 
-use Biteslote\Connector\Events\PosWebhookReceived;
+use Biteslot\Connector\Events\PosWebhookReceived;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;

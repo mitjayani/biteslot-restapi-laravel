@@ -1,6 +1,6 @@
 <?php
 
-namespace Biteslote\Connector\Models;
+namespace Biteslot\Connector\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class ProductMap extends Model
 {
-    protected $table = 'biteslote_product_map';
+    protected $table = 'biteslot_product_map';
 
     protected $guarded = [];
 

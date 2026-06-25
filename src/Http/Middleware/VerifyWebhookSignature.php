@@ -1,8 +1,8 @@
 <?php
 
-namespace Biteslote\Connector\Http\Middleware;
+namespace Biteslot\Connector\Http\Middleware;
 
-use Biteslote\RestApi\Webhook\SignatureVerifier;
+use Biteslot\RestApi\Webhook\SignatureVerifier;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,8 +16,8 @@ class VerifyWebhookSignature
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $secret = (string) config('biteslote-connector.webhook.secret', '');
-        $signature = (string) $request->header('X-Biteslote-Signature', '');
+        $secret = (string) config('biteslot-connector.webhook.secret', '');
+        $signature = (string) $request->header('X-Biteslot-Signature', '');
 
         if (! SignatureVerifier::verify($request->getContent(), $signature, $secret)) {
             return response()->json(['message' => 'Invalid signature'], 400);

@@ -9,7 +9,7 @@ return [
     | An API key is usually already scoped to one branch on the POS side, so this
     | can be left null and the POS will resolve the key's branch.
     */
-    'default_branch_id' => env('BITESLOTE_BRANCH_ID'),
+    'default_branch_id' => env('BITESLOT_BRANCH_ID'),
 
     /*
     |--------------------------------------------------------------------------
@@ -18,7 +18,7 @@ return [
     | Sent as `order_type` when a forwarded cart does not specify one. Must match
     | an OrderType slug/type configured on the POS (e.g. delivery, pickup).
     */
-    'default_order_type' => env('BITESLOTE_ORDER_TYPE', 'delivery'),
+    'default_order_type' => env('BITESLOT_ORDER_TYPE', 'delivery'),
 
     /*
     |--------------------------------------------------------------------------
@@ -39,8 +39,8 @@ return [
     */
     'webhook' => [
         'enabled' => true,
-        'route' => env('BITESLOTE_WEBHOOK_ROUTE', 'biteslote/webhook'),
-        'secret' => env('BITESLOTE_WEBHOOK_SECRET', ''),
+        'route' => env('BITESLOT_WEBHOOK_ROUTE', 'biteslot/webhook'),
+        'secret' => env('BITESLOT_WEBHOOK_SECRET', ''),
         'middleware' => ['api'],
     ],
 ];
