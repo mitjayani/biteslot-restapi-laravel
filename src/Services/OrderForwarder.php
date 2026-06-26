@@ -42,10 +42,17 @@ class OrderForwarder
      *     customer?: array{name?:string, phone?:string, phone_code?:string, email?:string},
      *     order_type?: string,
      *     note?: string,
-     *     reference?: int|string   // your local order id; used as idempotency key + echoed in the event
+     *     reference?: int|string,  // your local order id; used as idempotency key + echoed in the event
+     *     discounts?: array<array{label?:string, type?:string, value:float, funded_by?:string}>,
+     *     fees?: array<array{label?:string, amount:float, kind?:string, collected_by?:string}>,
+     *     customer_paid_total?: float   // what the customer paid on the site; reconciliation only
      * }
      *
-     * @return array the POS order payload
+     * Tax and restaurant charges are recomputed POS-side; discounts/fees you pass are
+     * applied (restaurant-funded) or stored as informational (platform-funded). Requires
+     * the POS RestApi module v2.4.0+.
+     *
+     * @return array the POS order payload (full price breakdown)
      *
      * @throws \Biteslot\Connector\Exceptions\UnmappedProductsException
      * @throws \Biteslot\RestApi\Exceptions\ApiException
@@ -64,6 +71,9 @@ class OrderForwarder
             'source' => $cart['source'] ?? $this->config->get('biteslot-connector.order_source'),
             'items' => $this->mapper->resolve($cart['items'] ?? []),
             'customer' => $cart['customer'] ?? null,
+            'discounts' => $cart['discounts'] ?? null,
+            'fees' => $cart['fees'] ?? null,
+            'customer_paid_total' => $cart['customer_paid_total'] ?? null,
         ], static fn ($v) => $v !== null && $v !== []);
 
         $key = $idempotencyKey
