@@ -45,7 +45,9 @@ class OrderForwarder
      *     reference?: int|string,  // your local order id; used as idempotency key + echoed in the event
      *     discounts?: array<array{label?:string, type?:string, value:float, funded_by?:string}>,
      *     fees?: array<array{label?:string, amount:float, kind?:string, collected_by?:string}>,
-     *     customer_paid_total?: float   // what the customer paid on the site; reconciliation only
+     *     customer_paid_total?: float,  // what the customer paid on the site; reconciliation only
+     *     tax_amount?: float,           // GST override; POS uses this instead of recomputing (0 = none)
+     *     tax_inclusive?: bool          // the supplied tax_amount is already inside item prices
      * }
      *
      * Tax and restaurant charges are recomputed POS-side; discounts/fees you pass are
@@ -74,6 +76,10 @@ class OrderForwarder
             'discounts' => $cart['discounts'] ?? null,
             'fees' => $cart['fees'] ?? null,
             'customer_paid_total' => $cart['customer_paid_total'] ?? null,
+            // GST override (null/absent = let the POS compute GST). Use array_key_exists
+            // so an explicit 0 (no GST) is still forwarded.
+            'tax_amount' => array_key_exists('tax_amount', $cart) ? $cart['tax_amount'] : null,
+            'tax_inclusive' => $cart['tax_inclusive'] ?? null,
         ], static fn ($v) => $v !== null && $v !== []);
 
         $key = $idempotencyKey
